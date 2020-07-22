@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using System.IO;
 using System.Collections;
  
@@ -93,38 +94,68 @@ public class GeneratePrefab
         // Full Path: "Assets/.../Cube.prefab"
         // GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/model/TestPrefab.prefab");
         // GameObject.Instantiate(obj);
-        GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", modelName, modelextension));
+        GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", modelName, modelextension));
+        
         var root = new GameObject("Root");
         root.name = string.Concat(subModelName,"_Root");
-        GameObject obj = GameObject.Instantiate(model, Vector3.zero, Quaternion.identity, root.transform);
-        obj.name = obj.name.Replace("(Clone)",string.Empty);
+
+        GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
+        model.transform.SetParent(root.transform);
+        //PrefabUtility.InstantiateAttachedAsset(model); // with (clone)
+
+        // connect prefab instance
+        //PrefabUtility.ConnectGameObjectToPrefab(obj, prefab);
 
         // show the model by name
-        foreach (Transform ob in obj.transform) 
+        foreach (Transform ob in model.transform) 
         {
             //Debug.Log(ob.name);
             if (ob.name == "Root" || ob.name == subModelName)
                 continue;
             ob.gameObject.SetActive(false);
         }
-
+        
         GameObject col = new GameObject("Collider");
         col.AddComponent<BoxCollider>();
-        //Debug.Log(string.Concat("Root/", modelName, "/Root/Hips/Spine_01/Spine_02"));
+
         GameObject obj_Spine2 = GameObject.Find(string.Concat(root.name, modelName, "/Root/Hips/Spine_01/Spine_02"));
         GameObject obj_Neck = GameObject.Find(string.Concat(root.name, modelName, "/Root/Hips/Spine_01/Spine_02/Spine_03/Neck"));
         GameObject obj_Spine1 = GameObject.Find(string.Concat(root.name, modelName, "/Root/Hips/Spine_01"));
 
-        
+
         GameObject.Instantiate(col, obj_Spine2.transform.position, Quaternion.identity, obj_Spine2.transform).name = "Spine2_Collider";
         GameObject.Instantiate(col, obj_Neck.transform.position, Quaternion.identity, obj_Neck.transform).name = "Neck_Collider";
         GameObject.Instantiate(col, obj_Spine1.transform.position, Quaternion.identity, obj_Spine1.transform).name = "Spine1_Collider";
 
         string genPrefabFullName = string.Concat(prefabDirectory, "/", root.name, prefabExtension);
         Object prefabObj = PrefabUtility.SaveAsPrefabAsset(root, genPrefabFullName);
+        
 
         GameObject.DestroyImmediate(root);
-        GameObject.DestroyImmediate(obj);
         GameObject.DestroyImmediate(col);
+        /**/
     }
+
+    [MenuItem("Examples/Instantiate Selected")]
+    static void InstantiatePrefab()
+    {
+        //Selection.activeObject = PrefabUtility.InstantiatePrefab(Selection.activeObject as GameObject); 
+
+        GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", modelName, modelextension));
+        
+        var root = new GameObject("Root");
+        root.name = string.Concat(subModelName,"_Root");
+
+        GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
+    }
+
+    // [MenuItem("Examples/Instantiate Selected", true)]
+    // static bool ValidateInstantiatePrefab()
+    // {
+    //     GameObject go = Selection.activeObject as GameObject;
+    //     if (go == null)
+    //         return false;
+
+    //     return PrefabUtility.IsPartOfPrefabAsset(go);
+    // }
 }
