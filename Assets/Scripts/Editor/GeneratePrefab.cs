@@ -87,6 +87,34 @@ public class GeneratePrefab
     static string modelName = "FantasyKingdom_Characters";
     static string subModelName = "SM_Chr_Fairy_01";
 
+    static string jsonStr = "{\"modelName\": \"FantasyKingdom_Characters\",\"subModelName\":\"SM_Chr_Fairy_01\"}";
+
+    [SerializeField]
+    struct Data
+    {
+        // excel(json) -> object(.prefab) -> yaml
+        // template
+        // 1. exl to json - done
+        // 2. prefab(yaml) template - how
+        // 如果过于灵活，会难以阅读；如果泛用性不强就没必要做这件事了
+        public string modelName;
+        public string subModelName;
+        // sub gameobject info
+            // model charactor
+                // id(or just identify by name)
+                // name
+                // parent(the struct)
+                // model ref
+                // [component]
+            // collider
+                //...
+            // model weapon
+                //...
+            // model other
+                //...
+            // timeline object
+    }
+
     [MenuItem("Tools/LoadAssetInEditor")]
     static void LoadModelInEditor()
     {
@@ -94,10 +122,13 @@ public class GeneratePrefab
         // Full Path: "Assets/.../Cube.prefab"
         // GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/model/TestPrefab.prefab");
         // GameObject.Instantiate(obj);
-        GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", modelName, modelextension));
+        Data data = new Data();
+        data = JsonUtility.FromJson<Data>(jsonStr);
+
+        GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", data.modelName, modelextension));
         
         var root = new GameObject("Root");
-        root.name = string.Concat(subModelName,"_Root");
+        root.name = string.Concat(data.subModelName,"_Root");
 
         GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
         model.transform.SetParent(root.transform);
@@ -110,7 +141,7 @@ public class GeneratePrefab
         foreach (Transform ob in model.transform) 
         {
             //Debug.Log(ob.name);
-            if (ob.name == "Root" || ob.name == subModelName)
+            if (ob.name == "Root" || ob.name == data.subModelName)
                 continue;
             ob.gameObject.SetActive(false);
         }
@@ -118,9 +149,9 @@ public class GeneratePrefab
         GameObject col = new GameObject("Collider");
         col.AddComponent<BoxCollider>();
 
-        GameObject obj_Spine2 = GameObject.Find(string.Concat(root.name, modelName, "/Root/Hips/Spine_01/Spine_02"));
-        GameObject obj_Neck = GameObject.Find(string.Concat(root.name, modelName, "/Root/Hips/Spine_01/Spine_02/Spine_03/Neck"));
-        GameObject obj_Spine1 = GameObject.Find(string.Concat(root.name, modelName, "/Root/Hips/Spine_01"));
+        GameObject obj_Spine2 = GameObject.Find(string.Concat(root.name, data.modelName, "/Root/Hips/Spine_01/Spine_02"));
+        GameObject obj_Neck = GameObject.Find(string.Concat(root.name, data.modelName, "/Root/Hips/Spine_01/Spine_02/Spine_03/Neck"));
+        GameObject obj_Spine1 = GameObject.Find(string.Concat(root.name, data.modelName, "/Root/Hips/Spine_01"));
 
 
         GameObject.Instantiate(col, obj_Spine2.transform.position, Quaternion.identity, obj_Spine2.transform).name = "Spine2_Collider";
@@ -139,23 +170,18 @@ public class GeneratePrefab
     [MenuItem("Examples/Instantiate Selected")]
     static void InstantiatePrefab()
     {
-        //Selection.activeObject = PrefabUtility.InstantiatePrefab(Selection.activeObject as GameObject); 
+        Selection.activeObject = PrefabUtility.InstantiatePrefab(Selection.activeObject as GameObject); 
 
-        GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", modelName, modelextension));
-        
-        var root = new GameObject("Root");
-        root.name = string.Concat(subModelName,"_Root");
 
-        GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
     }
 
-    // [MenuItem("Examples/Instantiate Selected", true)]
-    // static bool ValidateInstantiatePrefab()
-    // {
-    //     GameObject go = Selection.activeObject as GameObject;
-    //     if (go == null)
-    //         return false;
+    [MenuItem("Examples/Instantiate Selected", true)]
+    static bool ValidateInstantiatePrefab()
+    {
+        GameObject go = Selection.activeObject as GameObject;
+        if (go == null)
+            return false;
 
-    //     return PrefabUtility.IsPartOfPrefabAsset(go);
-    // }
+        return PrefabUtility.IsPartOfPrefabAsset(go);
+    }
 }
