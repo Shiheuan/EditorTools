@@ -130,12 +130,14 @@ public class GeneratePrefab
         TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
         data = JsonUtility.FromJson<Data>(jsonStr.text);
         */
-
+        var lastScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        var scene = lastScene.path;
+        var tempScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
         CharacterGen data = CharacterGen.Load(jsonStr.text);
  
         var root = new GameObject("Root");
-        root.name = data.characterName;//TODO: avoid scene already has object with same name
+        root.name = data.characterName;
 
         foreach (baseSub sub in data.subs)
         {
@@ -188,6 +190,7 @@ public class GeneratePrefab
         
 
         GameObject.DestroyImmediate(root);
+        EditorSceneManager.OpenScene(scene, OpenSceneMode.Single);
         /**/
     }
 
