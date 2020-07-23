@@ -123,7 +123,8 @@ public class GeneratePrefab
         // GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/model/TestPrefab.prefab");
         // GameObject.Instantiate(obj);
         Data data = new Data();
-        data = JsonUtility.FromJson<Data>(jsonStr);
+        TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
+        data = JsonUtility.FromJson<Data>(jsonStr.text);
 
         GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", data.modelName, modelextension));
         
