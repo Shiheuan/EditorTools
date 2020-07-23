@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System.Collections;
+using UnityEngine.Playables;
  
 public class GeneratePrefab
 {
@@ -122,49 +123,71 @@ public class GeneratePrefab
         // Full Path: "Assets/.../Cube.prefab"
         // GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/model/TestPrefab.prefab");
         // GameObject.Instantiate(obj);
+
+        // simple
+        /*
         Data data = new Data();
         TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
         data = JsonUtility.FromJson<Data>(jsonStr.text);
+        */
 
-        GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", data.modelName, modelextension));
-        
+        TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
+        CharacterGen data = CharacterGen.Load(jsonStr.text);
+ 
         var root = new GameObject("Root");
-        root.name = string.Concat(data.subModelName,"_Root");
+        root.name = data.characterName;//TODO: avoid scene already has object with same name
 
-        GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
-        model.transform.SetParent(root.transform);
-        //PrefabUtility.InstantiateAttachedAsset(model); // with (clone)
-
-        // connect prefab instance
-        //PrefabUtility.ConnectGameObjectToPrefab(obj, prefab);
-
-        // show the model by name
-        foreach (Transform ob in model.transform) 
+        foreach (baseSub sub in data.subs)
         {
-            //Debug.Log(ob.name);
-            if (ob.name == "Root" || ob.name == data.subModelName)
-                continue;
-            ob.gameObject.SetActive(false);
-        }
+            switch(sub.Type)
+            {
+                case "model":
+                    GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", sub.SourceName, modelextension));
+                    
+                    GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
+                    model.transform.SetParent(GameObject.Find(sub.Parent).transform);
+                    //PrefabUtility.InstantiateAttachedAsset(model); // with (clone)
+
+                    // connect prefab instance
+                    //PrefabUtility.ConnectGameObjectToPrefab(obj, prefab);
+                    // show the model by name
+                    foreach (Transform ob in model.transform) 
+                    {
+                        //Debug.Log(ob.name);
+                        if (ob.name == "Root" || ob.name == sub.Name)
+                            continue;
+                        ob.gameObject.SetActive(false);
+                    }
         
-        GameObject col = new GameObject("Collider");
-        col.AddComponent<BoxCollider>();
-
-        GameObject obj_Spine2 = GameObject.Find(string.Concat(root.name, data.modelName, "/Root/Hips/Spine_01/Spine_02"));
-        GameObject obj_Neck = GameObject.Find(string.Concat(root.name, data.modelName, "/Root/Hips/Spine_01/Spine_02/Spine_03/Neck"));
-        GameObject obj_Spine1 = GameObject.Find(string.Concat(root.name, data.modelName, "/Root/Hips/Spine_01"));
-
-
-        GameObject.Instantiate(col, obj_Spine2.transform.position, Quaternion.identity, obj_Spine2.transform).name = "Spine2_Collider";
-        GameObject.Instantiate(col, obj_Neck.transform.position, Quaternion.identity, obj_Neck.transform).name = "Neck_Collider";
-        GameObject.Instantiate(col, obj_Spine1.transform.position, Quaternion.identity, obj_Spine1.transform).name = "Spine1_Collider";
+                    break;
+                case "collider":
+                    GameObject col = new GameObject("Collider");
+                    col.AddComponent<BoxCollider>();
+                    GameObject col_parent = GameObject.Find(sub.Parent);
+                    GameObject.Instantiate(col, col_parent.transform.position, Quaternion.identity, col_parent.transform).name = sub.Name;
+                    GameObject.DestroyImmediate(col);
+                    break;
+                case "timeline":
+                    GameObject tl = new GameObject("Timeline");
+                    tl.AddComponent<PlayableDirector>();
+                    GameObject tl_parent = GameObject.Find(sub.Parent);
+                    GameObject.Instantiate(tl, tl_parent.transform.position, Quaternion.identity, tl_parent.transform).name = sub.Name;
+                    GameObject.DestroyImmediate(tl);
+                    break;
+                case "empty":
+                    GameObject em = new GameObject("Empty");
+                    GameObject em_parent = GameObject.Find(sub.Parent);
+                    GameObject.Instantiate(em, em_parent.transform.position, Quaternion.identity, em_parent.transform).name = sub.Name;
+                    GameObject.DestroyImmediate(em);
+                    break;
+            }
+        }
 
         string genPrefabFullName = string.Concat(prefabDirectory, "/", root.name, prefabExtension);
         Object prefabObj = PrefabUtility.SaveAsPrefabAsset(root, genPrefabFullName);
         
 
         GameObject.DestroyImmediate(root);
-        GameObject.DestroyImmediate(col);
         /**/
     }
 
