@@ -11,8 +11,10 @@ class MyAllPostprocessor : AssetPostprocessor
         foreach (string str in importedAssets)
         {
             Regex prefabSuffix = new Regex(".prefab$"); // '$' match end position
+            var data = CharacterGen.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json").text);
+            Regex nameSuffix = new Regex(data.characterName); 
             string absolutePath = Application.dataPath + str.Replace("Assets", ""); // del repeat "Assets" path
-            if (prefabSuffix.IsMatch(str)){ // check str has ".prefab" or not
+            if (prefabSuffix.IsMatch(str) && nameSuffix.IsMatch(str)){ // check str has ".prefab" or not
                 ResetTxt(absolutePath);
             }
         }

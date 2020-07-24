@@ -3,7 +3,10 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Playables;
+using YamlDotNet.Serialization;
+using System.Text.RegularExpressions;
  
 public class GeneratePrefab
 {
@@ -210,5 +213,41 @@ public class GeneratePrefab
             return false;
 
         return PrefabUtility.IsPartOfPrefabAsset(go);
+    }
+
+    class Contact
+    {
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public override string ToString() => $"name={Name}, tel={PhoneNumber}";
+    }
+    static string yamlInput = @"
+- Name: Oz-Ware
+  PhoneNumber: 123456789
+";
+    [MenuItem("Tools/TestYaml")]
+    static void testYamlSerializer()
+    {
+        var deserializer = new DeserializerBuilder().Build();
+
+        var contacts = deserializer.Deserialize<List<Contact>>(yamlInput);
+        Debug.Log(contacts[0]);
+    }
+
+    [MenuItem("Tools/GetGameObjects")]
+    static void GetGameObjects()
+    {
+        //Regex prefabSuffix = new Regex(@"--- !u!\d &\d+.*"); 
+        Regex prefabSuffix = new Regex(@"--- !u!(?=\d+)");
+
+        TextAsset pre = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Prefabs/SM_Chr_Fairy_01_Root.prefab");
+        
+        string text = System.IO.File.ReadAllText(string.Concat(Application.dataPath, "/Prefabs/SM_Chr_Fairy_01_Root.prefab"));
+        //MatchCollection matches = prefabSuffix.Matches(text);
+        string[] pres = prefabSuffix.Split(text);
+
+        foreach (var m in pres)
+            Debug.Log(m.ToString());
     }
 }
