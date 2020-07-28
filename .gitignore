@@ -5,3 +5,4 @@ Logs/
 Assembly-CSharp-Editor.csproj
 obj/
 *.sln
+*.csproj
