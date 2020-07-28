@@ -125,10 +125,11 @@ namespace PrefabGen
                     case ComponentType.GameObject:
                         if (!string.IsNullOrEmpty(sub.SourceName))
                         {
+                            var parent = GetOrCreateObject(root.transform, sub.Parent);
                             GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", sub.SourceName, modelextension));
                             
                             GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
-                            model.transform.SetParent(root.transform.Find(sub.Parent));
+                            model.transform.SetParent(parent);
                             //PrefabUtility.InstantiateAttachedAsset(model); // with (clone)
 
                             // connect prefab instance
