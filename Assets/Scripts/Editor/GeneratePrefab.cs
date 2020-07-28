@@ -15,7 +15,7 @@ namespace PrefabGen
         private static string prefabDirectory = "Assets/Prefabs";
         private static string prefabExtension = ".prefab";
     
-        [MenuItem("Tools/Generate prefab")]
+        //[MenuItem("Tools/Generate prefab")]
         public static void Generate()
         {
             // GameObject selectedGameObject = Selection.activeGameObject;
@@ -58,7 +58,7 @@ namespace PrefabGen
         //private static string Src = "Assets";
         private static string Dest = "Assets/Text";
 
-        [MenuItem("Tools/StartStopAssetEditing")]
+        //[MenuItem("Tools/StartStopAssetEditing")]
         static void CallAssetDatabaseAPIsBetweenStartStopAssetEditing()
         {
             try
@@ -95,7 +95,7 @@ namespace PrefabGen
 
         //static string jsonStr = "{\"modelName\": \"FantasyKingdom_Characters\",\"subModelName\":\"SM_Chr_Fairy_01\"}";
 
-        [MenuItem("Tools/LoadAssetInEditor")]
+        [MenuItem("Tools/Prefab Generate")]
         static void LoadModelInEditor()
         {
             // all path can be load in editor script
@@ -128,7 +128,7 @@ namespace PrefabGen
                             GameObject modelRef = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/", sub.SourceName, modelextension));
                             
                             GameObject model = PrefabUtility.InstantiatePrefab(modelRef) as GameObject;
-                            model.transform.SetParent(GameObject.Find(sub.Parent).transform);
+                            model.transform.SetParent(root.transform.Find(sub.Parent));
                             //PrefabUtility.InstantiateAttachedAsset(model); // with (clone)
 
                             // connect prefab instance
@@ -141,29 +141,23 @@ namespace PrefabGen
                                     continue;
                                 ob.gameObject.SetActive(false);
                             }
+                            model.name = sub.Name;
                         }
                         else
                         {
-                            GameObject empty = new GameObject("Empty");
-                            GameObject em_parent = GameObject.Find(sub.Parent);
-                            GameObject.Instantiate(empty, em_parent.transform.position, Quaternion.identity, em_parent.transform).name = sub.Name;
-                            GameObject.DestroyImmediate(empty);
+                            var em_parent = GetOrCreateObject(root.transform, sub.Parent);
+                            GameObject empty = new GameObject(sub.Name);
+                            empty.transform.parent = em_parent;
                         }
 
                         break;
                     case ComponentType.BoxCollider:
-                        GameObject col = new GameObject("Collider");
-                        col.AddComponent<BoxCollider>();
-                        GameObject col_parent = GameObject.Find(sub.Parent);
-                        GameObject.Instantiate(col, col_parent.transform.position, Quaternion.identity, col_parent.transform).name = sub.Name;
-                        GameObject.DestroyImmediate(col);
+                        var col = GetOrCreateObject(root.transform, sub.Parent);
+                        col.gameObject.AddComponent<BoxCollider>();
                         break;
                     case ComponentType.PlayableDirector:
-                        GameObject tl = new GameObject("Timeline");
-                        tl.AddComponent<PlayableDirector>();
-                        GameObject tl_parent = GameObject.Find(sub.Parent);
-                        GameObject.Instantiate(tl, tl_parent.transform.position, Quaternion.identity, tl_parent.transform).name = sub.Name;
-                        GameObject.DestroyImmediate(tl);
+                        var tl = GetOrCreateObject(root.transform, sub.Parent);
+                        tl.gameObject.AddComponent<PlayableDirector>();
                         break;
                 }
             }
@@ -177,7 +171,33 @@ namespace PrefabGen
             /**/
         }
 
-        [MenuItem("Examples/Instantiate Selected")]
+        static Transform GetOrCreateObject(Transform root, string path)
+        {
+            Transform res = null;
+            res = root.Find(path);
+            if (res == null){
+                res = root;
+                string[] paths = path.Split('/');
+                foreach (var p in paths)
+                {
+                    root = res.Find(p);
+                    if (root == null)
+                    {
+                        var tmp = new GameObject(p);
+                        tmp.transform.parent = res;
+                        res = tmp.transform;
+                    }
+                    else
+                    {
+                        res = root;
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        //[MenuItem("Examples/Instantiate Selected")]
         static void InstantiatePrefab()
         {
             Selection.activeObject = PrefabUtility.InstantiatePrefab(Selection.activeObject as GameObject); 
@@ -206,7 +226,7 @@ namespace PrefabGen
     - Name: Oz-Ware
     PhoneNumber: 123456789
     ";
-        [MenuItem("Tools/TestYaml")]
+        //[MenuItem("Tools/TestYaml")]
         static void testYamlSerializer()
         {
             var deserializer = new DeserializerBuilder().Build();
@@ -215,7 +235,7 @@ namespace PrefabGen
             Debug.Log(contacts[0]);
         }
 
-        [MenuItem("Tools/GetGameObjects")]
+        //[MenuItem("Tools/GetGameObjects")]
         static void GetGameObjects()
         {
             //Regex prefabSuffix = new Regex(@"--- !u!\d &\d+.*"); 

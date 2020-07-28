@@ -3,67 +3,67 @@
     "subs":[
         {
             "Type":1,
-            "Parent":"SM_Chr_Fairy_01_Root",
+            "Parent":"",
             "Name":"SM_Chr_Fairy_01",
             "SourceName":"FantasyKingdom_Characters"
         },
         {
             "Type":65,
-            "Parent":"Root/Hips/Spine_01/Spine_02",
-            "Name":"Spine2_Collider",
+            "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine_02/Spine2_Collider",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":65,
-            "Parent":"Root/Hips/Spine_01/Spine_02/Spine_03/Neck",
-            "Name":"Neck_Collider",
+            "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Neck_Collider",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":65,
-            "Parent":"Root/Hips/Spine_01",
-            "Name":"Spine1_Collider",
+            "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine1_Collider",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":320,
-            "Parent":"SM_Chr_Fairy_01_Root",
-            "Name":"TL_MainIn_Show",
+            "Parent":"TL_MainIn_Show",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":320,
-            "Parent":"SM_Chr_Fairy_01_Root",
-            "Name":"TL_MainIn_Idle_01",
+            "Parent":"TL_MainIn_Idle_01",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":320,
-            "Parent":"SM_Chr_Fairy_01_Root",
-            "Name":"TL_MainIn_Idle_02",
+            "Parent":"TL_MainIn_Idle_02",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":320,
-            "Parent":"SM_Chr_Fairy_01_Root",
-            "Name":"TL_MainIn_Touch_01",
+            "Parent":"TL_MainIn_Touch_01",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":320,
-            "Parent":"SM_Chr_Fairy_01_Root",
-            "Name":"TL_MainIn_Touch_02",
+            "Parent":"TL_MainIn_Touch_02",
+            "Name":"",
             "SourceName":""
         },
         {
             "Type":1,
-            "Parent":"SM_Chr_Fairy_01_Root",
+            "Parent":"",
             "Name":"Env",
             "SourceName":""
         },
         {
             "Type":1,
-            "Parent":"SM_Chr_Fairy_01_Root",
+            "Parent":"",
             "Name":"Effect",
             "SourceName":""
         }
