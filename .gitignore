@@ -6,3 +6,5 @@ Assembly-CSharp-Editor.csproj
 obj/
 *.sln
 *.csproj
+Assets/Plugins/Sirenix/
+Assets/Plugins/Sirenix.meta
