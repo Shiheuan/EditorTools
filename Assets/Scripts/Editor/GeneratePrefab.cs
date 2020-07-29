@@ -15,6 +15,22 @@ namespace PrefabGen
         private static string prefabDirectory = "Assets/Prefabs";
         private static string prefabExtension = ".prefab";
     
+        //[MenuItem("Tools/Test")]
+        public static void Test()
+        {
+            var d = JsonUtility.FromJson<Dictionary<string, int>>(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/dict.json").text);
+            foreach (var item in d)
+            {
+                Debug.Log(string.Concat("key: ", item.Key, ", value: ", item.Value));   
+            }
+
+            var dict = new Dictionary<string, int>();
+            dict.Add("apple1", 1);
+            dict.Add("apple2", 1);
+            dict.Add("apple3", 1);
+            dict.Add("apple4", 1);
+            Debug.Log(JsonUtility.ToJson(dict));
+        }
         //[MenuItem("Tools/Generate prefab")]
         public static void Generate()
         {
@@ -96,7 +112,7 @@ namespace PrefabGen
         //static string jsonStr = "{\"modelName\": \"FantasyKingdom_Characters\",\"subModelName\":\"SM_Chr_Fairy_01\"}";
 
         [MenuItem("Tools/Prefab Generate")]
-        static void LoadModelInEditor()
+        public static void PrefabGenerator()
         {
             // all path can be load in editor script
             // Full Path: "Assets/.../Cube.prefab"
