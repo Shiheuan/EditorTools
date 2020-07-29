@@ -6,5 +6,15 @@ Assembly-CSharp-Editor.csproj
 obj/
 *.sln
 *.csproj
+
+# Odin Inspector
 Assets/Plugins/Sirenix/
 Assets/Plugins/Sirenix.meta
+
+# NuGet
+Assets/NuGet.config*
+Assets/NuGet.meta
+Assets/packages.config*
+Assets/Packages.meta
+Assets/NuGet
+Assets/Packages/
