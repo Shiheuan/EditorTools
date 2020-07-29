@@ -35,7 +35,7 @@ namespace PrefabGen
         static void ResetTxt(string path){
             StreamReader sr = new StreamReader(path);
             string str = sr.ReadToEnd();
-            Debug.Log(str);
+            //Debug.Log(str);
             sr.Close();
             string pattern = @"m_InitialState: \d"; // match any decimal
             Regex prefabSuffix = new Regex(pattern);

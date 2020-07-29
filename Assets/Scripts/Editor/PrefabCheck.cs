@@ -25,12 +25,14 @@ namespace PrefabGen
                 EditorSceneManager.OpenScene(scene, OpenSceneMode.Single);
         }
 
-        //[MenuItem("Tools/GameObject To Json")]
+        [MenuItem("Tools/GameObject To Json")]
         public static void textToJson()
         {
             var prefab = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/SM_Chr_Fairy_01_Root.prefab")) as GameObject;
+            var model = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Models/FantasyKingdom_Characters.fbx")) as GameObject;
             var text = EditorJsonUtility.ToJson(prefab);
-            AddTxtTextByFileStream(text);
+            AddTxtTextByFileStream(EditorJsonUtility.ToJson(model), "model");
+            AddTxtTextByFileStream(text, "prefab");
             /*
              {
                  "GameObject":{
@@ -46,9 +48,9 @@ namespace PrefabGen
              }
              */
         }
-        public static void AddTxtTextByFileStream(string txtText)
+        public static void AddTxtTextByFileStream(string txtText, string name)
         {
-            string path = Application.dataPath + "/Text/MyTxtByFileStream.txt";
+            string path = Application.dataPath + "/Text/" + name + ".txt";
             // 文件流创建一个文本文件
             FileStream file = new FileStream(path, FileMode.Create);
             //得到字符串的UTF8 数据流

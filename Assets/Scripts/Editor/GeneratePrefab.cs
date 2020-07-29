@@ -68,7 +68,7 @@ namespace PrefabGen
         {
             static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
-                Debug.Log("All Done.");
+                //Debug.Log("All Done.");
             }
         }
         //private static string Src = "Assets";
@@ -241,7 +241,7 @@ namespace PrefabGen
         }
         static string yamlInput = @"
     - Name: Oz-Ware
-    PhoneNumber: 123456789
+    - PhoneNumber: 123456789
     ";
         //[MenuItem("Tools/TestYaml")]
         static void testYamlSerializer()
