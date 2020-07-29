@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 namespace PrefabGen
 {
@@ -10,11 +12,59 @@ namespace PrefabGen
         [MenuItem("Tools/Check Prefab")]
         public static void CheckPrefab()
         {
+            var lastScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            var scene = lastScene.path;
+            var tempScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
             var prefab = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/SM_Chr_Fairy_01_Root.prefab")) as GameObject;
+            
             var config = RawData.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json").text);
             Check(config, prefab);
+
+            if (!string.IsNullOrEmpty(scene))
+                EditorSceneManager.OpenScene(scene, OpenSceneMode.Single);
         }
 
+        //[MenuItem("Tools/GameObject To Json")]
+        public static void textToJson()
+        {
+            var prefab = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/SM_Chr_Fairy_01_Root.prefab")) as GameObject;
+            var text = EditorJsonUtility.ToJson(prefab);
+            AddTxtTextByFileStream(text);
+            /*
+             {
+                 "GameObject":{
+                     "serializedVersion":"6",
+                     "m_Layer":0,
+                     "m_Name":"SM_Chr_Fairy_01_Root",
+                     "m_TagString":"Untagged",
+                     "m_Icon":{"instanceID":0},
+                     "m_NavMeshLayer":0,
+                     "m_StaticEditorFlags":0,
+                     "m_IsActive":true
+                 }
+             }
+             */
+        }
+        public static void AddTxtTextByFileStream(string txtText)
+        {
+            string path = Application.dataPath + "/Text/MyTxtByFileStream.txt";
+            // 文件流创建一个文本文件
+            FileStream file = new FileStream(path, FileMode.Create);
+            //得到字符串的UTF8 数据流
+            byte[] bts = System.Text.Encoding.UTF8.GetBytes(txtText);
+            // 文件写入数据流
+            file.Write(bts, 0, bts.Length);
+            if (file != null)
+            {
+                //清空缓存
+                file.Flush();
+                // 关闭流
+                file.Close();
+                //销毁资源
+                file.Dispose();
+            }
+        }
         // TODO: not implement for every json config.
         // TODO: output all error
         public static void Check(RawData config, GameObject obj)
