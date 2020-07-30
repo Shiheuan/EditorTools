@@ -69,6 +69,28 @@ namespace PrefabGen
             static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
                 //Debug.Log("All Done.");
+                // string des = string.Concat(modelPath, "/", "FantasyKingdom_Characters.readable.fbx");
+                // foreach (string str in importedAssets)
+                // {
+                //     // Debug.Log(str); // >> "Assets/..."
+                //     if (str == des){
+                //         TextAsset meta = AssetDatabase.LoadAssetAtPath<TextAsset>(string.Concat(des, ".meta"));
+                //         Regex attr = new Regex(@"isReadable: \d");
+                //         if (attr.IsMatch(meta.text)){
+                //             attr.Replace(meta.text, "isReadable: 1");
+                //         } 
+                //     }
+                    
+                // }  
+                
+            }
+            void OnPreprocessModel()
+            {
+                if (assetImporter.assetPath.Contains(".readable"))
+                {
+                    ModelImporter modelimporter = (ModelImporter)assetImporter;
+                    modelimporter.isReadable = true;
+                }
             }
         }
         //private static string Src = "Assets";
@@ -111,6 +133,38 @@ namespace PrefabGen
 
         //static string jsonStr = "{\"modelName\": \"FantasyKingdom_Characters\",\"subModelName\":\"SM_Chr_Fairy_01\"}";
 
+        static bool CreateReadableModelAsset(string path, string name, string new_name)
+        {
+            string src = string.Concat(path, "/", name);
+            string des = string.Concat(path, "/", new_name);
+            if (!File.Exists(src)){
+                Debug.LogError(string.Concat("Asset [", name,"] doesn't exist."));
+                return false;
+            }
+            if (AssetDatabase.CopyAsset(src, des))
+            {
+                AssetDatabase.ImportAsset(des);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                // TextAsset meta = AssetDatabase.LoadAssetAtPath<TextAsset>(string.Concat(des, ".meta"));
+                // Regex attr = new Regex(@"isReadable: \d");
+                // if (attr.IsMatch(meta.text)){
+                //     attr.Replace(meta.text, "isReadable: 1");
+                // }
+            }
+            return false;
+        }
+        //[MenuItem("Tools/Testttt")]
+        public static void test()
+        {
+            var obj = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(modelPath, "/SM_Chr_Fairy_01_Root.prefab"));
+            var comps = obj.GetComponentsInChildren<PlayableDirector>();
+            foreach (var com in comps)
+            {
+                com.playOnAwake = true; // 2019.3.15f can't change to 'true', 'false works fine.
+            }
+        }
         [MenuItem("Tools/Prefab Generate")]
         public static void PrefabGenerator()
         {
@@ -130,6 +184,14 @@ namespace PrefabGen
             var tempScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
             RawData data = RawData.Load(jsonStr.text);
+
+            if (data.Readable)
+            {
+                if (!File.Exists(string.Concat(modelPath, "/FantasyKingdom_Characters.readable.fbx")))
+                {
+                    CreateReadableModelAsset(modelPath, "FantasyKingdom_Characters.fbx", "FantasyKingdom_Characters.readable.fbx");
+                }
+            }
     
             var root = new GameObject("Root");
             root.name = data.characterName;

@@ -9,6 +9,7 @@ namespace PrefabGen
     public class RawData
     {
         public string characterName = "";
+        public bool Readable = false;
         public List<RawComponent> subs = new List<RawComponent>();
         //private RawData instance = null;
 
