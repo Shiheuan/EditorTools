@@ -29,7 +29,9 @@ namespace PrefabGen
             dict.Add("apple2", 1);
             dict.Add("apple3", 1);
             dict.Add("apple4", 1);
-            Debug.Log(JsonUtility.ToJson(dict));
+
+
+            Debug.Log(JsonUtility.ToJson(Vector3.zero));
         }
         //[MenuItem("Tools/Generate prefab")]
         public static void Generate()
