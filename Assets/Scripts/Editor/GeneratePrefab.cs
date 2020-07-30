@@ -233,12 +233,14 @@ namespace PrefabGen
 
                         break;
                     case ComponentType.BoxCollider:
-                        var col = GetOrCreateObject(root.transform, sub.Parent);
-                        col.gameObject.AddComponent<BoxCollider>();
+                        var ob_col = GetOrCreateObject(root.transform, sub.Parent);
+                        var col = ob_col.gameObject.AddComponent<BoxCollider>();
+                        col.transform.localPosition = sub.Params.position;
                         break;
                     case ComponentType.PlayableDirector:
-                        var tl = GetOrCreateObject(root.transform, sub.Parent);
-                        tl.gameObject.AddComponent<PlayableDirector>();
+                        var ob_tl = GetOrCreateObject(root.transform, sub.Parent);
+                        var tl = ob_tl.gameObject.AddComponent<PlayableDirector>();
+                        tl.extrapolationMode = (DirectorWrapMode)sub.Params.directorWrapMode;
                         break;
                 }
             }

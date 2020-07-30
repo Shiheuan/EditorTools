@@ -30,5 +30,17 @@ namespace PrefabGen
         public string Parent = "";
         public string Name = "";
         public string SourceName = "";
+        public AttrConfig Params = new AttrConfig();
+    }
+
+    [Serializable]
+    public class AttrConfig
+    {
+        // timeline params
+        public bool playOnAwake = false;
+        public int directorWrapMode = (int)UnityEngine.Playables.DirectorWrapMode.None;
+
+        // common params
+        public Vector3 position = Vector3.zero;
     }
 }

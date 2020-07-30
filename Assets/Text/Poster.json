@@ -6,67 +6,102 @@
             "Type":1,
             "Parent":"",
             "Name":"SM_Chr_Fairy_01",
-            "SourceName":"FantasyKingdom_Characters.readable"
+            "SourceName":"FantasyKingdom_Characters.readable",
+            "Params":{
+
+            }
         },
         {
             "Type":65,
             "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine_02/Spine2_Collider",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "position":{"x":0.0,"y":0.0,"z":0.0}
+            }
         },
         {
             "Type":65,
             "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Neck_Collider",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "position":{"x":0.0,"y":0.0,"z":0.0}
+            }
         },
         {
             "Type":65,
             "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine1_Collider",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "position":{"x":0.0,"y":0.0,"z":0.0}
+            }
         },
         {
             "Type":320,
             "Parent":"TL_MainIn_Show",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "playOnAwake": false
+            }
         },
         {
             "Type":320,
             "Parent":"TL_MainIn_Idle_01",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "directorWrapMode":1,
+                "playOnAwake": false
+            }
         },
         {
             "Type":320,
             "Parent":"TL_MainIn_Idle_02",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "directorWrapMode":1,
+                "playOnAwake": false
+            }
         },
         {
             "Type":320,
             "Parent":"TL_MainIn_Touch_01",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "playOnAwake": false
+            }
         },
         {
             "Type":320,
             "Parent":"TL_MainIn_Touch_02",
             "Name":"",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                "playOnAwake": false
+            }
         },
         {
             "Type":1,
             "Parent":"",
             "Name":"Env",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+
+            }
         },
         {
             "Type":1,
             "Parent":"",
             "Name":"Effect",
-            "SourceName":""
+            "SourceName":"",
+            "Params":{
+                
+            }
         }
     ]
 }
