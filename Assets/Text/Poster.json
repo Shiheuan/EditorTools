@@ -6,7 +6,7 @@
             "Type":1,
             "Parent":"",
             "Name":"SM_Chr_Fairy_01",
-            "SourceName":"FantasyKingdom_Characters"
+            "SourceName":"FantasyKingdom_Characters.readable",
         },
         {
             "Type":65,
