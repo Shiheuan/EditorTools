@@ -5,7 +5,7 @@
         {
             "Type":1,
             "Parent":"",
-            "Name":"SM_Chr_Fairy_01",
+            "Name":"body",
             "SourceName":"FantasyKingdom_Characters.readable",
             "Params":{
 
@@ -13,7 +13,7 @@
         },
         {
             "Type":65,
-            "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine_02/Spine2_Collider",
+            "Parent":"body/Root/Hips/Spine_01/Spine_02/Spine2_Collider",
             "Name":"",
             "SourceName":"",
             "Params":{
@@ -22,7 +22,7 @@
         },
         {
             "Type":65,
-            "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Neck_Collider",
+            "Parent":"body/Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Neck_Collider",
             "Name":"",
             "SourceName":"",
             "Params":{
@@ -31,7 +31,7 @@
         },
         {
             "Type":65,
-            "Parent":"SM_Chr_Fairy_01/Root/Hips/Spine_01/Spine1_Collider",
+            "Parent":"body/Root/Hips/Spine_01/Spine1_Collider",
             "Name":"",
             "SourceName":"",
             "Params":{
