@@ -47,7 +47,11 @@ public class OdinMenuWindow : OdinMenuEditorWindow
         //tree.Add("Player", new PlayerInfo());
         //tree.AddAllAssetsAtPath("Odin Settings", "Assets/Plugins/Sirenix", typeof(ScriptableObject), true, true);
         tree.AddAllAssetsAtPath("Player Data", "Assets/Data", typeof(PlayerInfo));
-        tree.Add("Generator", new CharacterPrefabData());
+        var data = ScriptableObject.CreateInstance<CharacterPrefabData>();
+        var obj = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/SM_Chr_Fairy_01_Root.prefab");
+        data.OnlyModelPrefab = new List<GameObject>();
+        data.OnlyModelPrefab.Add(obj);
+        tree.Add("Generator", data);
         return tree;
     }
 }
