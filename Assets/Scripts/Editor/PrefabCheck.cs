@@ -72,7 +72,7 @@ namespace PrefabGen
         public static void Check(RawData config, GameObject obj)
         {
             List<string> error = new List<string>();
-            var root = (GameObject)CheckRoot(config.characterName, ref error);
+            var root = (GameObject)CheckRoot(config.prefabName, ref error);
 
             foreach (RawComponent sub in config.subs)
             {
@@ -83,7 +83,7 @@ namespace PrefabGen
             
             if (error.Count == 0)
             {
-                Debug.Log(string.Concat("Prefab [", config.characterName, "] is all good."));
+                Debug.Log(string.Concat("Prefab [", config.prefabName, "] is all good."));
             }
             else
             {

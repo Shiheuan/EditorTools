@@ -196,7 +196,7 @@ namespace PrefabGen
             }
     
             var root = new GameObject("Root");
-            root.name = data.characterName;
+            root.name = data.prefabName;
 
             foreach (RawComponent sub in data.subs)
             {

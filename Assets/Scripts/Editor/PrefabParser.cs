@@ -24,7 +24,7 @@ namespace PrefabGen
             {
                 Regex prefabSuffix = new Regex(".prefab$"); // '$' match end position
                 var data = RawData.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json").text);
-                Regex nameSuffix = new Regex(data.characterName); 
+                Regex nameSuffix = new Regex(data.prefabName); 
                 string absolutePath = Application.dataPath + str.Replace("Assets", ""); // del repeat "Assets" path
                 if (prefabSuffix.IsMatch(str) && nameSuffix.IsMatch(str)){ // check str has ".prefab" or not
                     ResetTxt(absolutePath);
@@ -64,13 +64,13 @@ namespace PrefabGen
             TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>(string.Concat(configPath,"/Poster.json"));
             RawData data = RawData.Load(jsonStr.text);
 
-            Regex prefabSuffix = new Regex(string.Concat(data.characterName,".prefab$"));
+            Regex prefabSuffix = new Regex(string.Concat(data.prefabName,".prefab$"));
 
             foreach (var name in Directory.GetFiles(prefabPath))
             {
                 if (prefabSuffix.IsMatch(name))
                 {
-                    Dictionary<string, string> dict = GetPrefabInfo(string.Concat(prefabPath, "/", data.characterName, ".prefab"));
+                    Dictionary<string, string> dict = GetPrefabInfo(string.Concat(prefabPath, "/", data.prefabName, ".prefab"));
                 }
             }
         }

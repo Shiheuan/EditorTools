@@ -57,7 +57,7 @@ public class PrefabGeneratorEditor : EditorWindow
 
         
         
-        if (File.Exists(string.Concat(testPrefabPath, "/", data.characterName, ".prefab")))
+        if (File.Exists(string.Concat(testPrefabPath, "/", data.prefabName, ".prefab")))
         {
             if (GUILayout.Button("Check"))
             {

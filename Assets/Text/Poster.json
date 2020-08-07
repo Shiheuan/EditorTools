@@ -1,12 +1,12 @@
 {
-    "characterName":"SM_Chr_Fairy_01_Root",
+    "prefabName":"SM_Chr_Fairy_01_Root",
     "Readable": true,
     "subs":[
         {
             "Type":1,
             "Parent":"",
             "Name":"body",
-            "SourceName":"FantasyKingdom_Characters.readable",
+            "SourceName":"PosterModel.body",
             "Params":{
 
             }

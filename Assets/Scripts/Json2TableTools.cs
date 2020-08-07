@@ -13,6 +13,7 @@ public class Json2TableTools
 {
     /// <summary>
     /// json表转换成lua表
+    /// by line 基于行进行转换
     /// </summary>
     /// <param name="json"></param>
     /// <returns></returns>
