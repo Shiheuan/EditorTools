@@ -2,38 +2,57 @@ local config = {
     ["1"] = {
         ID = 1,
         Name = "Character1",
-        Model = {
-            PosterModel = {
+        Poster = true,
+        Drama = false,
+        Battle = false,
+        Enhance = false,
+        Gacha = false,
+        BossRush = false,
+        Album = false,
+        PosterModel = {
+            {
                 body = "FantasyKingdom_Characters.fbx",
                 weapon = "",
                 parts = ""
-            },
-            DramaModel = {
+            }
+        },
+        DramaModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            BattleModel = {
-                body = "",
-                weapon = "",
-                parts = ""   
-            },
-            EnhanceModel = {
+            }
+        },
+        BattleModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            GachaModel = {
+            }
+        },
+        EnhanceModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            BossRushModel = {
+            }
+        },
+        GachaModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            AlbumModel = {
+            }
+        },
+        BossRushModel = {
+            {
+                body = "",
+                weapon = "",
+                parts = ""
+            }
+        },
+        AlbumModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
@@ -43,38 +62,57 @@ local config = {
     ["2"] = {
         ID = 2,
         Name = "Character2",
-        Model = {
-            PosterModel = {
+        Poster = false,
+        Drama = false,
+        Battle = false,
+        Enhance = false,
+        Gacha = false,
+        BossRush = false,
+        Album = false,
+        PosterModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            DramaModel = {
+            }
+        },
+        DramaModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            BattleModel = {
+            }
+        },
+        BattleModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            EnhanceModel = {
+            }
+        },
+        EnhanceModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            GachaModel = {
+            }
+        },
+        GachaModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            BossRushModel = {
+            }
+        },
+        BossRushModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            AlbumModel = {
+            }
+        },
+        AlbumModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
@@ -84,38 +122,57 @@ local config = {
     ["3"] = {
         ID = 2,
         Name = "Character3",
-        Model = {
-            PosterModel = {
+        Poster = false,
+        Drama = false,
+        Battle = false,
+        Enhance = false,
+        Gacha = false,
+        BossRush = false,
+        Album = false,
+        PosterModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            DramaModel = {
+            }
+        },
+        DramaModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            BattleModel = {
+            }
+        },
+        BattleModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            EnhanceModel = {
+            }
+        },
+        EnhanceModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            GachaModel = {
+            }
+        },
+        GachaModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            BossRushModel = {
+            }
+        },
+        BossRushModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""
-            },
-            AlbumModel = {
+            }
+        },
+        AlbumModel = {
+            {
                 body = "",
                 weapon = "",
                 parts = ""

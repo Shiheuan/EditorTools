@@ -24,7 +24,7 @@ namespace PrefabGen
             }
         }
 
-        static string modelextension = ".fbx";
+        //static string modelextension = ".fbx";
 
         static string modelPath = "Assets/Models";
 
