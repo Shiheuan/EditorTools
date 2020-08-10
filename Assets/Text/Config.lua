@@ -4,7 +4,7 @@ local config = {
         Name = "Character1",
         Model = {
             PosterModel = {
-                body = "Assets/Models/FantasyKingdom_Characters.fbx",
+                body = "FantasyKingdom_Characters.fbx",
                 weapon = "",
                 parts = ""
             },
