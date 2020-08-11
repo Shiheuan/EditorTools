@@ -45,7 +45,7 @@ namespace PrefabGen
     {
         public int ID;
         public string Name;
-        //public Dictionary<string, Dictionary<string, string>> Model;
+        public string Body;
         public bool Poster;
         public List<Dictionary<string, string>> PosterModel;
         public bool Drama;
@@ -61,7 +61,6 @@ namespace PrefabGen
         public bool Album;
         public List<Dictionary<string, string>> AlbumModel;
         private Dictionary<string, Dictionary<string,string>> AvaliableModels;
-
         public void init()
         {
             //TODO: for visit easily
@@ -69,33 +68,66 @@ namespace PrefabGen
         }
         public string GetModelPath(string config)
         {
-            var key = config.Split('.');
+            var key = config.ToLower().Split('.');
             var res = "";
             //TODO: Reflection
             switch(key[0]){
-                case "Poster":
+                case "body":
+                    res = this.Body;
+                    break;
+                case "poster":
                     res = PosterModel[0][key[1]];
                     break;
-                case "Battle":
+                case "battle":
                     res = BattleModel[0][key[1]];
                     break;
-                case "Drama":
+                case "drama":
                     res = DramaModel[0][key[1]];
                     break;
-                case "Enhance":
+                case "enhance":
                     res = EnhanceModel[0][key[1]];
                     break;
-                case "Gacha":
+                case "gacha":
                     res = GachaModel[0][key[1]];
                     break;
-                case "BossRush":
+                case "bossrush":
                     res = BossRushModel[0][key[1]];
                     break;
-                case "Album":
+                case "album":
                     res = AlbumModel[0][key[1]];
                     break;
             }
             // return Model[key[0]][key[1]];
+            return res;
+        }
+
+        public string GetPrefabName(string Name, string Type)
+        {
+            var res = "";
+            //TODO: Reflection
+            switch(Type){
+                case "Poster":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+                case "Battle":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+                case "Drama":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+                case "Enhance":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+                case "Gacha":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+                case "BossRush":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+                case "Album":
+                    res = string.Concat("P_", Name, 0, "_", Type);
+                    break;
+            }
             return res;
         }
     }
