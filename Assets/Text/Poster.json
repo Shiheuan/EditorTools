@@ -6,7 +6,7 @@
             "Type":1,
             "Parent":"",
             "Name":"body",
-            "SourceName":"body",
+            "SourceName":"config:body",
             "Params":{
 
             }

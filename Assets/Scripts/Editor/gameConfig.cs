@@ -68,7 +68,10 @@ namespace PrefabGen
         }
         public string GetModelPath(string config)
         {
-            var key = config.ToLower().Split('.');
+            config = config.ToLower();
+            var index = config.IndexOf(":");
+            var mode = config.Substring(0, index);
+            var key = config.Substring(index+1).Split('.');
             var res = "";
             //TODO: Reflection
             switch(key[0]){
