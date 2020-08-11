@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using PrefabGen;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
@@ -13,11 +14,23 @@ namespace PrefabGen
     public class PrefabGeneratorEditor : OdinMenuEditorWindow 
     {
         static PrefabGeneratorEditor instance = null;
+        static string lastScene = "";
         [MenuItem("Tools/Prefab Generator Tool")]
         private static void ShowWindow() {
+            // new scene
+            lastScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
             instance = GetWindow<PrefabGeneratorEditor>();
             instance.titleContent = new GUIContent("Prefab Generator Tool");
             instance.Show();
+        }
+        protected override void OnDestroy()
+        {
+            if (!string.IsNullOrEmpty(lastScene))
+                {
+                    EditorSceneManager.OpenScene(lastScene, OpenSceneMode.Single);
+                }
         }
 
         //string configPath = "Assets/Text";
@@ -59,36 +72,46 @@ namespace PrefabGen
             var data = gameConfig.LoadConfig();
             foreach (var item in data) 
             {
-                var c = new CharacterData(item.Value);
-                c.PosterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Character1.prefab");
+                var c = ScriptableObject.CreateInstance<CharacterData>();
+                c.init(item.Value);
+                //var c = new CharacterData(item.Value);
                 tree.Add(item.Value.Name, c);
             }
             return tree;
         }
 
-        public class CharacterData
+        public class CharacterData: SerializedScriptableObject
         {
             #region Debug
             [HideInInspector]
-            private bool develop = true;
+            private bool disable = true;
             [HideInInspector]
             private bool auto = true;
             #endregion
+            
+            public GameObject Model;
 
             #region ToggleList
+            [BoxGroup("Toggle")]
             [ToggleLeft]
             public bool Poster;
-            [ToggleLeft, DisableIf("develop")]
+            [BoxGroup("Toggle")]
+            [ToggleLeft, DisableIf("disable")]
             public bool Battle;
+            [BoxGroup("Toggle")]
             [ToggleLeft]
             public bool BossRush;
-            [ToggleLeft, DisableIf("develop")]
+            [BoxGroup("Toggle", false)]
+            [ToggleLeft, DisableIf("disable")]
             public bool Drama;
-            [ToggleLeft, DisableIf("develop")]
+            [BoxGroup("Toggle")]
+            [ToggleLeft, DisableIf("disable")]
             public bool Enhance;
-            [ToggleLeft, DisableIf("develop")]
+            [BoxGroup("Toggle")]
+            [ToggleLeft, DisableIf("disable")]
             public bool Gacha;
-            [ToggleLeft, DisableIf("develop")]
+            [BoxGroup("Toggle")]
+            [ToggleLeft, DisableIf("disable")]
             public bool Album;
             #endregion
 
@@ -101,14 +124,7 @@ namespace PrefabGen
 
             [BoxGroup("Poster/Poster/Models")]
             [AssetsOnly]
-            public GameObject poster_body;
-            [BoxGroup("Poster/Poster/Models")]
-            [AssetsOnly]
-            public GameObject poster_weapon;
-            [BoxGroup("Poster/Poster/Models")]
-            [AssetsOnly]
-            public GameObject poster_parts;
-            // End Poster
+            public Dictionary<string, GameObject> poster_models = new Dictionary<string, GameObject>();
             #endregion
 
             #region Battle
@@ -119,13 +135,7 @@ namespace PrefabGen
             public GameObject BattlePrefab;
             [BoxGroup("Battle/Battle/Models")]
             [AssetsOnly]
-            public GameObject battle_body;
-            [BoxGroup("Battle/Battle/Models")]
-            [AssetsOnly]
-            public GameObject battle_weapon;
-            [BoxGroup("Battle/Battle/Models")]
-            [AssetsOnly]
-            public GameObject battle_parts;
+            public Dictionary<string, GameObject> battle_models = new Dictionary<string, GameObject>();
             // End Battle
             #endregion
             
@@ -137,13 +147,7 @@ namespace PrefabGen
             public GameObject BossRushPrefab;
             [BoxGroup("BossRush/BossRush/Models")]
             [AssetsOnly]
-            public GameObject bossrush_body;
-            [BoxGroup("BossRush/BossRush/Models")]
-            [AssetsOnly]
-            public GameObject bossrush_weapon;
-            [BoxGroup("BossRush/BossRush/Models")]
-            [AssetsOnly]
-            public GameObject bossrush_parts;
+            public Dictionary<string, GameObject> bossrush_models = new Dictionary<string, GameObject>();
             // End BossRush
             #endregion
 
@@ -155,13 +159,7 @@ namespace PrefabGen
             public GameObject DramaPrefab;
             [BoxGroup("Drama/Drama/Models")]
             [AssetsOnly]
-            public GameObject drama_body;
-            [BoxGroup("Drama/Drama/Models")]
-            [AssetsOnly]
-            public GameObject drama_weapon;
-            [BoxGroup("Drama/Drama/Models")]
-            [AssetsOnly]
-            public GameObject drama_parts;
+            public Dictionary<string, GameObject> drama_models = new Dictionary<string, GameObject>();
             // End Drama
             #endregion
 
@@ -173,13 +171,7 @@ namespace PrefabGen
             public GameObject EnhancePrefab;
             [BoxGroup("Enhance/Enhance/Models")]
             [AssetsOnly]
-            public GameObject enhance_body;
-            [BoxGroup("Enhance/Enhance/Models")]
-            [AssetsOnly]
-            public GameObject enhance_weapon;
-            [BoxGroup("Enhance/Enhance/Models")]
-            [AssetsOnly]
-            public GameObject enhance_parts;
+            public Dictionary<string, GameObject> enhance_models = new Dictionary<string, GameObject>();
             // End Enhance
             #endregion
 
@@ -191,13 +183,7 @@ namespace PrefabGen
             public GameObject GachaPrefab;
             [BoxGroup("Gacha/Gacha/Models")]
             [AssetsOnly]
-            public GameObject gacha_body;
-            [BoxGroup("Gacha/Gacha/Models")]
-            [AssetsOnly]
-            public GameObject gacha_weapon;
-            [BoxGroup("Gacha/Gacha/Models")]
-            [AssetsOnly]
-            public GameObject gacha_parts;
+            public Dictionary<string, GameObject> gacha_models = new Dictionary<string, GameObject>();
             // End Gacha
             #endregion
             
@@ -209,25 +195,25 @@ namespace PrefabGen
             public GameObject AlbumPrefab;
             [BoxGroup("Album/Album/Models")]
             [AssetsOnly]
-            public GameObject album_body;
-            [BoxGroup("Album/Album/Models")]
-            [AssetsOnly]
-            public GameObject album_weapon;
-            [BoxGroup("Album/Album/Models")]
-            [AssetsOnly]
-            public GameObject album_parts;
+            public Dictionary<string, GameObject> album_models = new Dictionary<string, GameObject>();
             // End Album
             #endregion
 
-            [HorizontalGroup]
+            private CharacterConfig config;
             [Button(ButtonSizes.Medium)]
-            public void Generate(){}
-            [HorizontalGroup]
+            public void Generate()
+            {
+                if (Poster)
+                {
+                    GeneratePrefab.PrefabGenerator(this.config, "Poster");
+                }
+            }
             [Button(ButtonSizes.Medium)]
             public void Check(){}
 
-            public CharacterData(CharacterConfig config)
+            public void init(CharacterConfig config)
             {
+                this.config = config;
                 // pre check toggles
                 Poster = config.Poster;
                 Drama = config.Drama;
@@ -238,8 +224,36 @@ namespace PrefabGen
                 Album = config.Album;
 
                 // get prefab path, check already exist
+                this.CheckPrefabExist();
 
                 // get models
+                this.GetModels();
+            }
+            
+            public void CheckPrefabExist()
+            {
+                if (this.Poster)
+                {
+                    var prefab = this.config.GetPrefabName(this.config.Name, "Poster");
+                    var path = string.Concat(GeneratePrefab.prefabDirectory, "/", prefab, ".prefab");
+                    if(File.Exists(path))
+                    {
+                        this.PosterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                    }
+                }
+            }
+
+            public void GetModels()
+            {
+                this.Model = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(GeneratePrefab.modelPath, "/", this.config.Body));
+                if (this.Poster)
+                {
+                    foreach (var pair in this.config.PosterModel[0])
+                    {
+                        var asset = AssetDatabase.LoadAssetAtPath<GameObject>(string.Concat(GeneratePrefab.modelPath, "/", pair.Value));
+                        poster_models.Add(pair.Key, asset);
+                    }
+                }
             }
         }
         public enum PrefabType

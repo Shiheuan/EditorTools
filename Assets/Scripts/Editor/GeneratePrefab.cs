@@ -12,8 +12,8 @@ namespace PrefabGen
 {
     public class GeneratePrefab : AssetPostprocessor
     {
-        private static string prefabDirectory = "Assets/Prefabs";
-        private static string prefabExtension = ".prefab";
+        public static string prefabDirectory = "Assets/Prefabs";
+        public static string prefabExtension = ".prefab";
 
         void OnPreprocessModel()
         {
@@ -26,26 +26,20 @@ namespace PrefabGen
 
         //static string modelextension = ".fbx";
 
-        static string modelPath = "Assets/Models";
+        public static string modelPath = "Assets/Models";
 
         //[MenuItem("Tools/Prefab Generate")]
         /// param: @Type, @Config {Name, Modellist}
         /// 
-        public static void PrefabGenerator(string Type, CharacterConfig config)
+        public static void PrefabGenerator(CharacterConfig config, string Type)
         {
-            var lastScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-            var scene = lastScene.path;
-            var tempScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-
             //if (Type == "Poster")
             TextAsset jsonStr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Text/Poster.json");
             RawData data = RawData.Load(jsonStr.text);
-            
-            //get prefab name
-            GetPrefabName("Poster", config.Name);
     
             var root = new GameObject("Root");
-            root.name = config.Name;
+            //get prefab name
+            root.name = config.GetPrefabName(config.Name, Type);
 
             foreach (RawComponent sub in data.subs)
             {
@@ -111,10 +105,6 @@ namespace PrefabGen
             
 
             GameObject.DestroyImmediate(root);
-            if (!string.IsNullOrEmpty(scene))
-            {
-                EditorSceneManager.OpenScene(scene, OpenSceneMode.Single);
-            }
         }
 
         static bool CreateReadableModelAsset(string path, string name, string new_name)
@@ -135,10 +125,6 @@ namespace PrefabGen
         }
 
         static void CheckReadableModel(string path)
-        {
-
-        }
-        static void GetPrefabName(string Type, string Name)
         {
 
         }
